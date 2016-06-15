@@ -1,0 +1,61 @@
+<html>
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Google Reader (Previously Starred) 2 pocket (read it later) converter</title>
+</head>
+
+<body>
+    <script src="jquery-1.9.1.min.js"></script>
+
+<h2>Google Reader (Previously Starred) 2 pocket (read it later) converter</h2>
+<p>
+Google Reader was shut down on July 1 2013. I started to use pocket as an alternative. The problem was that I had saved starred items in Google Reader and wanted to move them to pocket. Pocket had an import tool but not for google readers json takeout.
+</p>
+<p>
+So I made this, it converts the google reader takout file to instapaper format and that can be imported to reader.
+</p>
+<p>
+If the file is too large it will crash, I don't have solution, my starred file was small.
+</p>
+
+
+<ol>
+    <li>Go to your Google "Reader Settings" > click Import/Export > click "Download your data through Takeout" > click "Create Archive" > click "Download" > open the archive and copy the json from the "starred.json" file</li>
+    <li>Paste the content of the "starred.json" file here :
+        <textarea id="jsonvalue" style="width:100%" rows="3"></textarea>
+    </li>
+    <li>
+        <button id="convert">Click here to convert!</button>
+    </li>
+    <li>Copy the content from the textarea below and save it to an .html file :
+        <textarea id="placeholder" style="width:100%" rows="3"></textarea>
+    </li>
+    <li>Go to your <a href="http://getpocket.com/import/instapaper">pocket (instapaper) import page</a> and load the .html file you just created.</li>
+    <li>Enjoy ...</li>
+</ol>
+
+Any Questions or suggestions contact me on <a href="https://twitter.com/davidative">Twitter</a> or <a href="http://il.linkedin.com/in/rapposa">Linkedin</a>
+
+    <script>
+
+
+$(document).ready(function () {
+    $("#convert").click(function () {
+
+        var output = '<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8" /><title>Instapaper: Export</title></head><body><h1>Unread</h1><ol></ol><h1>Archive</h1><ol>';
+
+        var data = JSON.parse($('#jsonvalue').val());
+
+        $.each(data.items, function (i, items) {
+            output += '<li><a href="' + items.alternate[0].href + '">' + items.title + '</li>';
+        });
+
+        output += '</ol></body></html>';
+        $('#placeholder').text(output);
+    });
+
+});
+    </script>
+</body>
+</html>
